@@ -140,8 +140,10 @@ module.exports = function (grunt) {
           .writeln('    - ' + grunt.log.wordlist(block.src, { separator: '\n    - ' }));
 
         // update concat config for this block
-        concat[block.dest] = block.src;
-        grunt.config('concat', concat);
+        if (block.type === 'css') {
+          concat[block.dest] = block.src;
+          grunt.config('concat', concat);
+        }
 
         // update requirejs config as well, as during path lookup we might have
         // updated it on data-main attribute
@@ -181,7 +183,7 @@ module.exports = function (grunt) {
 
         // uglify config, only for js type block
         if (block.type === 'js') {
-          uglify[block.dest] = block.dest;
+          uglify[block.dest] = block.src;
           grunt.config(uglifyName, uglify);
         }
 
